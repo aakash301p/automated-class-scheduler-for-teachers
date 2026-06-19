@@ -1,0 +1,873 @@
+{
+  "name": "Smart Classroom Scheduling Platform",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "teacher class login",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Teacher_id",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "board",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "CBSE"
+                  },
+                  {
+                    "option": "UP"
+                  },
+                  {
+                    "option": "ICSE"
+                  },
+                  {
+                    "option": "SSC"
+                  },
+                  {
+                    "option": "BIHAR"
+                  }
+                ]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "CLASS ",
+              "fieldType": "number"
+            },
+            {
+              "fieldLabel": "subject"
+            },
+            {
+              "fieldLabel": "section"
+            },
+            {
+              "fieldLabel": "date",
+              "fieldType": "date"
+            },
+            {
+              "fieldLabel": "start_time"
+            },
+            {
+              "fieldLabel": "end_time"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.6,
+      "position": [
+        -576,
+        -160
+      ],
+      "id": "c1071ee5-5de0-4dc3-8dfb-c58a3df8e469",
+      "name": "On form submission",
+      "webhookId": "bbdb0460-aa2f-4970-bf63-ad9327006b37"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2cc2dcd0-ea21-4123-8923-36d862d2b4d0",
+              "name": "teacher_id",
+              "value": "={{$json[\"Teacher_id\"]}}",
+              "type": "number"
+            },
+            {
+              "id": "15909bb6-5d2d-43f1-a493-1b82c5f52258",
+              "name": "board",
+              "value": "={{ $json[\"board\"]}}",
+              "type": "string"
+            },
+            {
+              "id": "29eb4a24-8aee-4609-a867-2f5c51f255f1",
+              "name": "class",
+              "value": "={{ $json[\"CLASS \"] }}{{ $json.section }}",
+              "type": "string"
+            },
+            {
+              "id": "b3069e7e-4e59-4481-9601-dc648bcf8c91",
+              "name": "subject",
+              "value": "={{ $json.subject }}",
+              "type": "string"
+            },
+            {
+              "id": "e2c0d0ab-0d4d-47e3-b5b6-e6063ba40bfa",
+              "name": "section",
+              "value": "={{ $json[\"section\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "b7d04a05-59ea-4c59-9a4c-fd88fdd1fbe9",
+              "name": "date",
+              "value": "={{ $json.date }}",
+              "type": "string"
+            },
+            {
+              "id": "398b1ee4-18a8-4992-bc1f-054d4e19ca7d",
+              "name": "start_time",
+              "value": "={{ $json.start_time }}",
+              "type": "string"
+            },
+            {
+              "id": "a23e1bc5-2077-452c-9940-1ac74d25970f",
+              "name": "end_time",
+              "value": "={{ $json.end_time }}",
+              "type": "string"
+            },
+            {
+              "id": "05ae8f80-ec66-4d9e-aef3-ecaeb5b503dc",
+              "name": "class_link",
+              "value": "=https://yourdomain.com/class/{{$now.toUnix()}}",
+              "type": "string"
+            },
+            {
+              "id": "e627d21a-aef6-4fb4-88c6-4027c248fc51",
+              "name": "reminder_set",
+              "value": "false",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -352,
+        -160
+      ],
+      "id": "3f659efd-e7d1-4415-8380-349d6f17c6ba",
+      "name": "Edit Fields",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -576,
+        160
+      ],
+      "id": "2abb0729-9b91-4076-a0dc-59ffa7c9ed86",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "15yf6tXA2LLV9o6paodOKHo6FZNa-dsHiK4ul_jiXqLY",
+          "mode": "list",
+          "cachedResultName": "TEACHER DETAIL",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15yf6tXA2LLV9o6paodOKHo6FZNa-dsHiK4ul_jiXqLY/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1513520592,
+          "mode": "list",
+          "cachedResultName": "TEACHER LOGIN",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15yf6tXA2LLV9o6paodOKHo6FZNa-dsHiK4ul_jiXqLY/edit#gid=1513520592"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "reminder_set",
+              "lookupValue": "false"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -352,
+        160
+      ],
+      "id": "bca6ac3f-daa2-4db8-8b8c-521b1a6f1e11",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "FTZvcJ7NnRbqYhog",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "15yf6tXA2LLV9o6paodOKHo6FZNa-dsHiK4ul_jiXqLY",
+          "mode": "list",
+          "cachedResultName": "TEACHER DETAIL",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15yf6tXA2LLV9o6paodOKHo6FZNa-dsHiK4ul_jiXqLY/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1513520592,
+          "mode": "list",
+          "cachedResultName": "TEACHER LOGIN",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15yf6tXA2LLV9o6paodOKHo6FZNa-dsHiK4ul_jiXqLY/edit#gid=1513520592"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [
+            "teacher_name"
+          ],
+          "schema": [
+            {
+              "id": "teacher_name",
+              "displayName": "teacher_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "teacher_email",
+              "displayName": "teacher_email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "board",
+              "displayName": "board",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "class",
+              "displayName": "class",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "subject",
+              "displayName": "subject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "section",
+              "displayName": "section",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "date",
+              "displayName": "date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "start_time",
+              "displayName": "start_time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "end_time",
+              "displayName": "end_time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "class_link",
+              "displayName": "class_link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {
+          "cellFormat": "USER_ENTERED",
+          "locationDefine": {
+            "values": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -128,
+        -160
+      ],
+      "id": "3d9685f2-7c3f-4ce9-b996-340826c550e8",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "FTZvcJ7NnRbqYhog",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{$json[\"email\"]}}",
+        "subject": "Class Scheduled Successfully",
+        "message": "=Hello {{ $json.teacher_name }},\n\nYour class has been scheduled successfully:\n\n📚 Board: {{ $json.board }}\n🎓 Class: {{ $json.class }}\n📖 Section: {{ $json.section }}\n📝 Subject: {{ $json.subject }}\n📅 Date: {{ $json.date }}\n⏰ Time: {{ $json.start_time }} - {{ $json.end_time }}\n🔗 Class Link: {{ $json.class_link }}\n\nYou will receive a reminder 15 minutes before the class starts.\n\nBest regards,\nSmart Classroom Team",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        544,
+        -256
+      ],
+      "id": "fdf0a9c7-35c7-4328-8f11-a8028183cb3f",
+      "name": "Send a message",
+      "webhookId": "59c82f64-936f-46d6-9ab9-508ca79302a0",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "55hl2xjCNwFhXRHc",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "1M26t34MTO0UtEKe",
+          "mode": "list",
+          "cachedResultName": "teacher",
+          "cachedResultUrl": "/projects/g09L4ZMheXVTKQpz/datatables/1M26t34MTO0UtEKe"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "teacher_id",
+              "keyValue": "={{ $json.teacher_id }}"
+            }
+          ]
+        },
+        "limit": 1
+      },
+      "id": "dbca83cb-a2d8-43d1-ae75-9d988eaa01ad",
+      "name": "Get Teacher Details",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        96,
+        -160
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "combinator": "and",
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "1",
+              "leftValue": "={{ $json.teacher_name }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "216f2538-15d4-45c1-a511-aa943eee37f8",
+      "name": "Validate Teacher Exists",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        320,
+        -160
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1",
+              "name": "error",
+              "value": "Teacher ID not found in database",
+              "type": "string"
+            },
+            {
+              "id": "2",
+              "name": "teacher_id",
+              "value": "={{ $json.teacher_id }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "58db5915-473c-47ff-b430-982089eb0665",
+      "name": "Error: Teacher Not Found",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        544,
+        -64
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "combinator": "and",
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "1",
+              "leftValue": "={{ $json.reminder_set }}",
+              "rightValue": "false",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "1593bec4-af21-460d-90a5-f8521a4a8910",
+      "name": "Filter Upcoming Classes",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.3,
+      "position": [
+        -128,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const now = new Date();\n\nreturn items.filter(item => {\n  const row = item.json;\n\n  const classDateTime = new Date(\n    `${row.date}T${row.start_time}:00`\n  );\n\n  const diffMinutes =\n    (classDateTime - now) / (1000 * 60);\n\n  return diffMinutes >= 14 && diffMinutes <= 16;\n});"
+      },
+      "id": "9374fd1b-4117-4a84-ac4e-cff4a1637806",
+      "name": "Check Reminder Time",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        96,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.teacher_email }}",
+        "subject": "Reminder: Class Starts in 15 Minutes",
+        "message": "=Hello {{ $json.teacher_name }},\n\n⏰ This is a reminder that your class starts in 15 minutes!\n\n📚 Board: {{ $json.board }}\n🎓 Class: {{ $json.class }}\n📖 Section: {{ $json.section }}\n📝 Subject: {{ $json.subject }}\n📅 Date: {{ $json.date }}\n⏰ Time: {{ $json.start_time }} - {{ $json.end_time }}\n🔗 Class Link: {{ $json.class_link }}\n\nPlease join on time.\n\nBest regards,\nSmart Classroom Team",
+        "options": {}
+      },
+      "id": "d40b25e0-eae0-4771-aba3-09fb1c003f5d",
+      "name": "Send Reminder Email",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        320,
+        160
+      ],
+      "webhookId": "55174a60-26ad-4021-b376-b79808429e13",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "55hl2xjCNwFhXRHc",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "15yf6tXA2LLV9o6paodOKHo6FZNa-dsHiK4ul_jiXqLY",
+          "mode": "list",
+          "cachedResultName": "TEACHER DETAIL",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15yf6tXA2LLV9o6paodOKHo6FZNa-dsHiK4ul_jiXqLY/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1513520592,
+          "mode": "list",
+          "cachedResultName": "TEACHER LOGIN",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15yf6tXA2LLV9o6paodOKHo6FZNa-dsHiK4ul_jiXqLY/edit#gid=1513520592"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "reminder_sent": "true"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "teacher_name",
+              "displayName": "teacher_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "teacher_email",
+              "displayName": "teacher_email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "board",
+              "displayName": "board",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "class",
+              "displayName": "class",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "subject",
+              "displayName": "subject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "section",
+              "displayName": "section",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "date",
+              "displayName": "date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "start_time",
+              "displayName": "start_time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "end_time",
+              "displayName": "end_time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "class_link",
+              "displayName": "class_link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "reminder_sent",
+              "displayName": "reminder_sent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "d640e82b-cb16-4212-8fe6-36355099e95f",
+      "name": "Mark Reminder Sent",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        544,
+        160
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "FTZvcJ7NnRbqYhog",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## 📝 Class Scheduling Flow\n\nThis workflow handles teacher class scheduling:\n1. Form submission captures class details\n2. Validates teacher exists in database\n3. Saves to Google Sheets\n4. Sends confirmation email",
+        "height": 200,
+        "width": 748,
+        "color": 2
+      },
+      "id": "dd3597db-14d1-448d-9397-e62caf229441",
+      "name": "Sticky Note 813909c3",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -688,
+        -400
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## ⏰ Reminder System\n\nRuns every 5 minutes to:\n1. Find classes with reminders not sent\n2. Check if class starts in 15 minutes\n3. Send reminder email\n4. Mark reminder as sent",
+        "height": 200,
+        "width": 748,
+        "color": 3
+      },
+      "id": "10152742-72f4-440a-9c66-f71cc209e600",
+      "name": "Sticky Note c9eeba52",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -752,
+        -48
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Filter Upcoming Classes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Get Teacher Details",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        []
+      ]
+    },
+    "Get Teacher Details": {
+      "main": [
+        [
+          {
+            "node": "Validate Teacher Exists",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Teacher Exists": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Error: Teacher Not Found",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Upcoming Classes": {
+      "main": [
+        [
+          {
+            "node": "Check Reminder Time",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Reminder Time": {
+      "main": [
+        [
+          {
+            "node": "Send Reminder Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Reminder Email": {
+      "main": [
+        [
+          {
+            "node": "Mark Reminder Sent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "a4d90f97-34d0-4587-92c1-756f9ee19036",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "eb198c72f33e0a0ecce878ea988e8bdc67756a2cfc7264f13447155ff596ad56"
+  },
+  "nodeGroups": [],
+  "id": "2anMAAViwyrfsisg",
+  "tags": []
+}
